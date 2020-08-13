@@ -1,0 +1,45 @@
+IOC：
+	控制反转：将对象的创建权反转到spring容器中，当我们需要使用某个类的实例时去spring容器中取，降低程序间的耦合性
+依赖的jar包：
+	(1)spring-beans-4.3.0.RELEASE.jar
+	(2)spring-core-4.3.0.RELEASE.jar
+	(3)spring-context-4.3.0.RELEASE.jar
+	(4)spring-expression-4.3.0.RELEASE.jar
+声明式注入：
+	(1)构造注入：通过构造函数进行注入
+	<bean id="user" class="com.ssm.bean.User">
+		<constructor-arg  type="java.lang.Integer" name="id" value="100"/>
+		<constructor-arg  type="java.lang.String"  name="name"  value="张三"/>
+	</bean>
+	(2)set注入：通过属性的Setter方法注入
+	<bean id="user" class="com.ss.bean.User" scope="prototype">		scope:bean的作用范围	单例：singleton(默认)	多例：prototype(用于Struct2的Action的Bean)
+		<property name="id" value="100"/>
+		<property name="user" ref="user"/>
+	</bean>
+注解式注入：(依赖spring-aop-4.3.0.RELEASE.jar)
+	(1)组件扫描
+		<context:component-scan base-package="com.ssm"/>	扫描com.ssm包下面所有带有@Component	@Repository	@Service @Controller注解的类注入spring容器
+	(2)组件扫描过滤
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		过滤扫描指定包下带有@Service的注解类注入到spring容器中
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		过滤扫描指定包下带有@Controller的注解类不注入到spring容器中
+	(3)相关注解
+		A.构造注入注解
+			@Component:标识任意Bean的注解注入到spring的容器中，可以用在任意类上面	@Component("beanId")	不指定beanId默认为类名首字母小写
+			@Controller:标识此类为Controller Bean注入到spring容器中					@Controller("beanId")	不指定beanId默认为类名首字母小写
+			@Service:标识此类为Service Bean注入到spring容器中						@Service("beanId")	    不指定beanId默认为类名首字母小写
+			@Repostory:标识此类为Dao Bean注入到spring容器中							@Repostory("beanId")	不指定beanId默认为类名首字母小写
+			@Scope:指定Bean的作用域													@Scope("prototype")		默认Bean的作用域为单例
+		B.依赖注入注解
+			@Autowired：按类型注入(如果容器中同类型的Bean有多个会报错，是spring提供的注解)
+				(1)可以标记在属性上，根据属性类型去spring容器中寻找，将找到bean注入
+				(2)可以标记在属性的Setter方法上，通过参数的类型去spring容器中寻找，找到bean注入
+			@Qulifier("beanName"):指定Bean的id，和@Autowired配合使用，不能单独使用
+			@Resource("beanName"):按名称注入(是jdk提供的注解，不建议使用)
+			@Value：用于基本数据类型和String类型的注入，和spring中的SpEL一起使用
+		C.生命周期注解(JDK注解)
+			@PostCinstruct：指定初始化方法
+			@PreDestory：指定销毁方法
+	注意：如果没有使用组件扫描的方式去注入的时候，需要使用<context:annotation-config>进行激活那些标记了注解的bean，这就是通常说的注解+配置的混合开发
+	

@@ -1,0 +1,39 @@
+/**
+ * 使用注解配置bean对象  效果等同于xml文件配置  只是相对简单些
+ *
+ * <bean id="accountService" class="com.chinasoft.factory.StaticFactory" factory-method="getBean"></bean>
+ *   用于配置bean对象
+ *      等同于xml中的《bean》
+ *         component:
+ *              作用:将当前类对象存入到spring容器中
+ *              属性:value 用于指定bean对象的id值,当不写的时候  默认采用当前类的类名,首字母小写
+ *           常用注解:功能等同于Component 只是具有了清晰的分层含义
+ *         Controller:一般用在表现层
+ *         Service:一般用在业务层
+ *         Repository:一般用在持久层
+ *    用于注入数据的:
+ *        Autowired:
+ *               作用:根据类型自动注入数据,只要容器中有唯一的一个bean对象类型和要注入的变量类型匹配,就可以注入成功
+ *                   如果ioc容器中没有任何bean类型和要注入的变量类型匹配则会报错
+ *                   如果IOC容器中有多个类型能匹配上  这时候就需要其他的注解来辅助注入,当发现有多个数据能匹配上时会用变量名进行匹配如果还是无法匹配则报错
+ *                   可以是属性上也可以是方法上
+ *                   有该注解  就不需要set方法
+ *       Qualifier:
+ *               作用:按照类型注入的基础上再按照名称注入,他在给类成员注入的时候  不能单独使用,可以在方法的参数上单独使用
+ *               属性:value  指定bean的名称
+ *        Resource:
+ *               作用:直接按照bean的id注入,可以独立使用
+ *               属性:name  指定bean的id
+ *        value:
+ *              作用:用于指定数据的值(基于基本类型和String类型数据的注入)
+ *              属性:value  用于指定数据的值  和spring中SpEL(spring中的el表达式一起用)
+ *                  SpEL写法:${表达式}
+ *
+ *  用于改变作用范围的
+ *         scope:
+ *              作用:用来指定bean的作用范围
+ *              属性:value  指定作用范围的取值,常用值:
+ *  用于跟生命周期相关的(属于jdk中的注解)
+ *         postConstruct:指定初始化方法
+ *         ProDestroy:指定销毁方法
+ */
